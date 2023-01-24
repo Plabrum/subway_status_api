@@ -1,0 +1,17 @@
+environment: {}
+parameters: {}
+packages:
+  - name: subway_status_api
+    environment: {}
+    parameters: {}
+    annotations: {}
+    functions:
+      - name: reports
+        binary: false
+        main: ""
+        runtime: "python:default"
+        web: true
+        parameters: {}
+        environment: {}
+        annotations: {}
+        limits: {}
