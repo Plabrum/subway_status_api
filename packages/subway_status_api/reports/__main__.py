@@ -3,6 +3,8 @@ import datetime
 import requests
 import pytz
 
+all_trains = [ "A", "C","E","B","D","F","M","G","L","J","Z","N","Q","R","W","1","3","2","4","5","6","7","GS","SI"]
+
 def get_alerts(mta_key, json_out=False) -> dict:
 	local_tz = pytz.timezone('US/Eastern') # use your local timezone name here
 
@@ -44,13 +46,17 @@ def get_alerts(mta_key, json_out=False) -> dict:
 	records = r.json()['entity']
 	train_dict = {}
 
-	def add_alert(train, alert_type, combined_report):
-		if train not in train_dict:
+	def add_alert(train, alert_type, combined_report, hard_init=False):
+		if hard_init:
+			for t in train:
 				train_dict[train] = {"current":[], "future": [], "past":[], "breaking":[]}
-	
-		train_dict[train][alert_type].append(combined_report)
+		else:
+			if train not in train_dict:
+				train_dict[train] = {"current":[], "future": [], "past":[], "breaking":[]}
 
+			train_dict[train][alert_type].append(combined_report)
 
+	add_alert(train=all_trains, alert_type=None, combined_report=None, hard_init=True)
 	for record in records:
 
 		now = pytz.timezone('US/Eastern').localize(datetime.datetime.now())
